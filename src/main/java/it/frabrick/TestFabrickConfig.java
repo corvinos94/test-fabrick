@@ -1,6 +1,10 @@
 package it.frabrick;
 
-import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -10,9 +14,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
-import javax.sql.DataSource;
+import it.frabrick.cash.client.HeaderSourceProperties;
+import it.frabrick.cash.client.interceptor.HeaderRequestInterceptor;
+import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -24,9 +31,12 @@ public class TestFabrickConfig {
    
 	@Autowired
     DataSourceProperties dataSourceProperties;
+	
+	@Autowired
+	HeaderSourceProperties headerSourceProperties;
 
     @Bean
-    @ConfigurationProperties(prefix = DataSourceProperties.PREFIX)
+    //@ConfigurationProperties(prefix = DataSourceProperties.PREFIX)
     DataSource realDataSource() {
         DataSource dataSource = DataSourceBuilder
                 .create(this.dataSourceProperties.getClassLoader())
@@ -45,6 +55,10 @@ public class TestFabrickConfig {
     
     @Bean
     RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
+    	List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+    	interceptors.add(new HeaderRequestInterceptor(this.headerSourceProperties.getNameAuthSchema(), this.headerSourceProperties.getAuthSchema()));
+		interceptors.add(new HeaderRequestInterceptor(this.headerSourceProperties.getNameApiKey(), this.headerSourceProperties.getApiKey()));
+    	
+    	return builder.additionalInterceptors(interceptors).build();
     }
 }
