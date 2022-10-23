@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.frabrick.cash.balance.manager.CashBalanceManagerI;
 import it.frabrick.cash.balance.mapper.CashBalanceMapper;
-import it.frabrick.cash.balance.model.Cash;
+import it.frabrick.cash.balance.model.CashBO;
 import it.frabrick.cash.balance.model.CashBalanceResponse;
 
 @RestController
@@ -23,7 +23,7 @@ public class CashBalance {
 	
 	@GetMapping("/cash-balance/{accountId}")
 	public CashBalanceResponse getCacheBalance(@PathVariable String accountId) {
-		Cash cashBalance = cashBalanceManager.getBalance(accountId);
+		CashBO cashBalance = cashBalanceManager.getBalance(accountId);
 		return cashBalanceMapper.cash2CashBalanceResponse(cashBalance);
 	}
 }

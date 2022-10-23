@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BalanceModel {
+public class BalanceModelBO {
 	
 	private String date;
 	private Double balance;

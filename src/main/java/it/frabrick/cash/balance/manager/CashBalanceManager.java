@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
-import it.frabrick.cash.balance.model.Cash;
+import it.frabrick.cash.balance.model.CashBO;
 import it.frabrick.cash.client.RestTemplateFabrickClient;
 import it.frabrick.cash.client.ServiceSourceProperties;
 import it.frabrick.cash.common.exception.CashServiceException;
@@ -20,18 +20,18 @@ public class CashBalanceManager implements CashBalanceManagerI {
 	ServiceSourceProperties serviceSourceProperties;
 	
 	@Autowired
-	RestTemplateFabrickClient<Cash> restTemplate;
+	RestTemplateFabrickClient<CashBO> restTemplate;
 	
 	@Autowired
-	GlobalExceptionUtil<Cash> exceptionUtil;
+	GlobalExceptionUtil<CashBO> exceptionUtil;
 	
 	@Override
-	public Cash getBalance(String accountId) {
-		Cash cashBalance = null;
+	public CashBO getBalance(String accountId) {
+		CashBO cashBalance = null;
 		try {
-			cashBalance = restTemplate.get(this.serviceSourceProperties.getBaseUrl() + CASH_ACCOUNT_BALANCE_API, Cash.class, accountId);
+			cashBalance = restTemplate.get(this.serviceSourceProperties.getBaseUrl() + CASH_ACCOUNT_BALANCE_API, CashBO.class, accountId);
 		} catch (HttpClientErrorException e) {
-			Cash cashError = exceptionUtil.buildErrorResponse(e, Cash.class);
+			CashBO cashError = exceptionUtil.buildErrorResponse(e, CashBO.class);
 			ErrorModel error = exceptionUtil.getErrorModel(cashError);
 			throw new CashServiceException(error.getCode(), error.getDescription(), e);
 		}
