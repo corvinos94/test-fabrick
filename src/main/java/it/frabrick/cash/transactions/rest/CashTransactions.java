@@ -19,6 +19,7 @@ public class CashTransactions {
 	@Autowired
 	CashTransactionsManagerI cashTransactionsManager;
 	
+	@Autowired
 	CashTransactionsMapper cashTransactionsMapper;
 	
 	@GetMapping("/cash-transactions/{accountId}")
