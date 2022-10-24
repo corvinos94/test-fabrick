@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import it.frabrick.cash.common.exception.CashServiceException;
-import it.frabrick.cash.common.model.CashBalanceErrorResponse;
+import it.frabrick.cash.common.model.CashErrorResponse;
+import it.frabrick.cash.common.model.StatusCode;
 import lombok.extern.log4j.Log4j2;
 
 @ControllerAdvice
@@ -17,13 +18,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(CashServiceException.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<CashBalanceErrorResponse> handleAllUncaughtException(CashServiceException exception) {
+	public ResponseEntity<CashErrorResponse> handleAllUncaughtException(CashServiceException exception) {
 		log.error(exception.getCode() + " - " + exception.getMessage(), exception);
 		return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	private ResponseEntity<CashBalanceErrorResponse> buildErrorResponse(CashServiceException exception, HttpStatus httpStatus) {
-		CashBalanceErrorResponse errorResponse = new CashBalanceErrorResponse(exception.getCode(), exception.getMessage());
+	private ResponseEntity<CashErrorResponse> buildErrorResponse(CashServiceException exception, HttpStatus httpStatus) {
+		CashErrorResponse errorResponse = new CashErrorResponse(StatusCode.STATUS_KO.toString(), exception.getCode(), exception.getMessage());
 		return ResponseEntity.status(httpStatus).body(errorResponse);
 	}
 }

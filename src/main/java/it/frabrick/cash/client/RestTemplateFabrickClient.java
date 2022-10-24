@@ -16,8 +16,8 @@ public class RestTemplateFabrickClient<T extends BasicModel> {
 		return restTemplate.getForObject(url, obj, variables);
 	}
 	
-	public T post(String url, Object request, Class<T> obj) {
-		return restTemplate.postForObject(null, request, obj);
+	public T post(String url, Object request, Class<T> obj, Object ...variables) {
+		return restTemplate.postForObject(url, request, obj, variables);
 	}
 	
 	public void put(String url, Object request, Object ...variables) {

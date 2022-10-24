@@ -7,8 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CashBalanceErrorResponse {
+public class CashErrorResponse {
 
+	private String status;
 	private String code;
 	private String description;
 }
