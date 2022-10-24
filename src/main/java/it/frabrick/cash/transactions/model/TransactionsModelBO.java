@@ -1,7 +1,5 @@
 package it.frabrick.cash.transactions.model;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +11,7 @@ public class TransactionsModelBO {
 	private String operationId;
 	private String accountingDate;
 	private String valueDate;
-	private List<TransactionTypeBO> type;
+	private TransactionTypeBO type;
     private Double amount;
     private String currency;
     private String description;

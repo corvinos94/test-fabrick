@@ -14,7 +14,7 @@ import it.frabrick.cash.transactions.model.TransactionsBO;
 @Component
 public class CashTransactonsManager implements CashTransactionsManagerI {
 
-	private static final String CASH_ACCOUNT_BALANCE_API = "/api/gbs/banking/v4.0/accounts/{accountId}/transactions?fromAccountingDate={{fromDate}}&toAccountingDate={{toDate}}";
+	private static final String CASH_ACCOUNT_BALANCE_API = "/api/gbs/banking/v4.0/accounts/{accountId}/transactions?fromAccountingDate={fromDate}&toAccountingDate={toDate}";
 	
 	@Autowired
 	ServiceSourceProperties serviceSourceProperties;
