@@ -8,6 +8,7 @@ import lombok.Setter;
 public class CashTransferBO {
 
 	private CreditorBO creditor;
+	private String executionDate;
 	private String description;
 	private Double amount;
 	private String currency;

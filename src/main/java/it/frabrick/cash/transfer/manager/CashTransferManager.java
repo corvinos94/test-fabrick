@@ -15,7 +15,7 @@ import it.frabrick.cash.transfer.model.TransferBO;
 @Component
 public class CashTransferManager implements CashTransferManagerI {
 
-	private static final String CREATE_MONEY_TRANSFER_API = "";
+	private static final String CREATE_MONEY_TRANSFER_API = "/api/gbs/banking/v4.0/accounts/{accountId}/payments/money-transfers";
 	@Autowired
 	ServiceSourceProperties serviceSourceProperties;
 	
@@ -37,5 +37,4 @@ public class CashTransferManager implements CashTransferManagerI {
 		}
 		return moneyTransfer;
 	}
-
 }

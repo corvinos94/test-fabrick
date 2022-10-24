@@ -18,13 +18,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(CashServiceException.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<CashErrorResponse> handleAllUncaughtException(CashServiceException exception) {
+	public ResponseEntity<CashErrorResponse> handleAllCaughtException(CashServiceException exception) {
 		log.error(exception.getCode() + " - " + exception.getMessage(), exception);
 		return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ExceptionHandler(RuntimeException.class)
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<CashErrorResponse> handleAllUncaughtException(RuntimeException exception) {
+		log.error(exception.getMessage(), exception);
+		return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	private ResponseEntity<CashErrorResponse> buildErrorResponse(CashServiceException exception, HttpStatus httpStatus) {
 		CashErrorResponse errorResponse = new CashErrorResponse(StatusCode.STATUS_KO.toString(), exception.getCode(), exception.getMessage());
+		return ResponseEntity.status(httpStatus).body(errorResponse);
+	}
+	
+	private ResponseEntity<CashErrorResponse> buildErrorResponse(RuntimeException exception, HttpStatus httpStatus) {
+		CashErrorResponse errorResponse = new CashErrorResponse(StatusCode.STATUS_KO.toString(), StatusCode.CODE_TF001.toString(), "Generic error");
 		return ResponseEntity.status(httpStatus).body(errorResponse);
 	}
 }

@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 public class CashTransferResponse extends GenericResponse {
 
+	private String statusOperation;
 	private String description;
 }

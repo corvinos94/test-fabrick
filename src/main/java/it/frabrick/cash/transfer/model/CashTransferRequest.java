@@ -8,6 +8,7 @@ import lombok.Setter;
 public class CashTransferRequest {
 
 	private String accountId;
+	private String accountCode;
 	private String receiverName;
 	private String description;
 	private String currency;
