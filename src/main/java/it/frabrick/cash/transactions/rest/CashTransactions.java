@@ -25,6 +25,8 @@ public class CashTransactions {
 	@GetMapping("/cash-transactions/{accountId}")
 	public CashTransactionsResponse getCashTransactions(@PathVariable String accountId, @RequestParam String fromAccountingDate, @RequestParam String toAccountingDate) {
 		TransactionsBO transactions = cashTransactionsManager.getTransactions(accountId, fromAccountingDate, toAccountingDate);
-		return cashTransactionsMapper.transactions2CashTransactionsResponse(transactions);
+		CashTransactionsResponse response = cashTransactionsMapper.transactions2CashTransactionsResponse(transactions);
+		cashTransactionsManager.saveTransactions(response.getList());
+		return response;
 	}
 }

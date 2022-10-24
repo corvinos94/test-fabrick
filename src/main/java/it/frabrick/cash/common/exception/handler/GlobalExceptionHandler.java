@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import it.frabrick.cash.common.exception.CashPersistenceException;
 import it.frabrick.cash.common.exception.CashServiceException;
 import it.frabrick.cash.common.model.CashErrorResponse;
 import it.frabrick.cash.common.model.StatusCode;
@@ -22,6 +23,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		log.error(exception.getCode() + " - " + exception.getMessage(), exception);
 		return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@ExceptionHandler(CashPersistenceException.class)
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<CashErrorResponse> handleAllPersistenceException(CashPersistenceException exception) {
+		log.error(StatusCode.CODE_TF002.toString() + " - " + exception.getMessage(), exception);
+		return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
@@ -32,6 +40,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	private ResponseEntity<CashErrorResponse> buildErrorResponse(CashServiceException exception, HttpStatus httpStatus) {
 		CashErrorResponse errorResponse = new CashErrorResponse(StatusCode.STATUS_KO.toString(), exception.getCode(), exception.getMessage());
+		return ResponseEntity.status(httpStatus).body(errorResponse);
+	}
+	
+	private ResponseEntity<CashErrorResponse> buildErrorResponse(CashPersistenceException exception, HttpStatus httpStatus) {
+		CashErrorResponse errorResponse = new CashErrorResponse(StatusCode.STATUS_KO.toString(), StatusCode.CODE_TF002.toString(), "Persistence error");
 		return ResponseEntity.status(httpStatus).body(errorResponse);
 	}
 	
