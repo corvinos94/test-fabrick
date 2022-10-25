@@ -55,7 +55,7 @@ public class CashTransactonsManager implements CashTransactionsManagerI {
 	public void saveTransactions(List<CashTransactions> transactions) {
 		try {
 			List<Transaction> transactionsToPersist = cashTransactionsEntityMapper.cashTransactions2Transactions(transactions);
-			transactionsRepository.save(transactionsToPersist);
+			transactionsRepository.saveAll(transactionsToPersist);
 		} catch (Exception e) {
 			throw new CashPersistenceException(e.getMessage(), e);
 		}
